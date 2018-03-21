@@ -12,14 +12,20 @@ export default class RegisterScreen extends React.Component {
     };
   }
 
-  render() {
+  componentDidMount(){
+    console.log('did');
+    this.setState({
+      details:{name:'',email:'',phone:'',about_us:''}
+    });
+  }
 
+  render() {
+    console.log('renders');
     let {name, email, phone, about_us} = this.state.details;
     let {navigate} = this.props.navigation;
 
     return (
       <View style={styles.container}>
-
         <Fields line_number={1} max_length={40} name_plc={this.state.placeholders.name} func={(text)=>{this.setState({details:{name: text, email: email, phone: phone, about_us: about_us}})}}/>
         <Fields line_number={1} max_length={40} name_plc={this.state.placeholders.email} func={(text)=>{this.setState({details:{name: name, email: text, phone: phone, about_us: about_us}})}}/>
         <Fields line_number={1} max_length={40} name_plc={this.state.placeholders.phone} func={(text)=>{this.setState({details:{name: name, email: email, phone: text, about_us: about_us}})}}/>

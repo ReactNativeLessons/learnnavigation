@@ -1,22 +1,49 @@
 import React from 'react';
 import NavigationStack from './screens/navigation';
-import { StyleSheet, Text, View, TextInput,Image,Button } from 'react-native';
+import { StyleSheet,  View } from 'react-native';
+
+import Expo from 'expo';
+
+function cacheFonts(fonts) {
+  return fonts.map(font => Expo.Font.loadAsync(font));
+}
 
 export default class App extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
+  state = {
+     appIsReady: false,
+   }
 
-      };
-  }
+   componentWillMount() {
+     this._loadAssetsAsync();
+   }
 
-  render() {
+   render() {
+     if (!this.state.appIsReady) {
+       return <Expo.AppLoading />;
+     }
 
-    return (
-      <NavigationStack/>
-    );
-  }
+     return (
+       <NavigationStack/>
+     );
+   }
+
+   async _loadAssetsAsync() {
+     const fontAssets = cacheFonts([
+       { 'FontAwesome': require('@expo/vector-icons/fonts/FontAwesome.ttf'),
+       },
+       { 'Material Icons': require('@expo/vector-icons/fonts/MaterialIcons.ttf'),
+       },
+     ]);
+
+
+
+     await Promise.all([
+       ...fontAssets,
+     ]);
+
+     this.setState({appIsReady: true});
+   }
 }
 
 const styles = StyleSheet.create({
